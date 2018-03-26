@@ -16,8 +16,6 @@ cBoard.service('chartLiquidFillService', function () {
 
     this.parseOption = function (data) {
         var config = data.chartConfig;
-        var maxValue = config.values[0].maxValue ? config.values[0].maxValue : 100;
-        console.log(maxValue);
 
         var animation = true;
         if (config.animation == 'static') {
@@ -28,18 +26,13 @@ cBoard.service('chartLiquidFillService', function () {
 
         var datas = [];
         var value = data.data.length > 0 ? data.data[0][0] : 'N/A';
-        if (value != 'N/A' && value < maxValue) {
+        if (value != 'N/A') {
             for (var i = 1; i < 5; i++) {
                 var percent = 1;
                 for (var j = 1; j < i; j++) {
                     percent = percent * 0.95;
                 }
-                datas.push(value * percent / maxValue);
-            }
-        }
-        if(value != 'N/A' && value >= maxValue){
-            for( var i = 0;i < 5;i ++){
-                datas.push(1)
+                datas.push(value * percent);
             }
         }
 
@@ -57,21 +50,9 @@ cBoard.service('chartLiquidFillService', function () {
                 outline: {
                     show: false
                 }
-            }],
-            label:{
-                textStyle: {
-                    fontSize: 35,
-                    fontFamily: 'Lobster Two',
-                    color:"#000"
-                }
-            }
+            }]
         };
 
-        if(datas[0] == 1){
-            option.label.normal = {
-                formatter:"I'm full."
-            }
-        }
         return option;
     };
 });
